@@ -21,7 +21,11 @@ namespace Employee.Data.Repositories
         public async Task<List<Entities.Employee>> GetAllEmployees()
         {
             return await _context.Employees.Where(x => !x.IsDeleted).ToListAsync();
-        } 
+        }
+        public async Task<Entities.Employee?> LoginEmployee(string email, string password)
+        {
+            return await _context.Employees.SingleOrDefaultAsync(x => x.EmployeeEmail == email && x.EmployeePassword == password);
+        }
         #endregion
     }
 }

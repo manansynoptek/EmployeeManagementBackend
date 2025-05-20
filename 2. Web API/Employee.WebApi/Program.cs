@@ -16,13 +16,9 @@ var configuration = builder.Configuration;
 // Add services to the container.
 
 builder.Services.AddControllers();
-    //.AddJsonOptions(x =>
-    //{
-    //    // serialize enums as strings in api responses (e.g. Role)
-    //    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    //});
-
 var connectionString = configuration.GetConnectionString("EmployeeConnection");
+
+builder.Services.AddHealthChecks();
 builder.Services.AddDbContext<EmployeeManagementContext>(o => o.UseSqlServer(connectionString));
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -93,6 +89,8 @@ var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 builder.Services.Configure<JwtSettings>(jwtSettings);
 
 var app = builder.Build();
+
+app.MapHealthChecks("/healthz");
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -182,7 +182,7 @@ namespace Employee.BusinessLogic.BusinessLogic
         public async Task<ResponseModel> AuthenticateEmployee(LoginRequestModel loginRequestModel)
         {
             ResponseModel result = new();
-            var employee = await _context.Employees.SingleOrDefaultAsync(x => x.EmployeeEmail == loginRequestModel.Email && x.EmployeePassword == loginRequestModel.Password);
+            var employee = await _unitOfWork.Employee.LoginEmployee(loginRequestModel.Email, loginRequestModel.Password);
 
             EmployeeModel employeeModel = new();
             if (employee == null)
